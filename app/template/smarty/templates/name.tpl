@@ -5,5 +5,7 @@
 </head>
 <body>
 	<span>Sup, {$name}.</span>
+	</br>
+	{$luc|@var_dump}
 </body>
 </html>
