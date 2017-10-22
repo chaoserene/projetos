@@ -13,7 +13,6 @@ class User extends MysqliDb {
 	private $register_date;
 
 	public function __construct($user = null, $password = null, $email = null, $register_date = null) {
-		$db = new MysqliDb;
 		$this->setUser($user);
 		$this->setPassword($password);
 		$this->setEmail($email);
@@ -73,10 +72,10 @@ class User extends MysqliDb {
 		if(empty($this->getEmail())) return false;
 
 		try {
-			$db->connect();
-			$db->where('email', $this->getEmail(), 'LIKE');
-			$user = $db->getone('users');
-			$db->disconnect();
+			$this->connect();
+			$this->where('email', $this->getEmail(), 'LIKE');
+			$user = $this->getone('users');
+			$this->disconnect();
 		} catch(Exception $e) {
 			//don't do anything with my exceptions for now
 		}
@@ -94,9 +93,9 @@ class User extends MysqliDb {
 				'email' => $this->getEmail(),
 				'register_date' => $this->getRegisterDate()
 			);
-			$db->connect();
-			$db->insert('users', $data);
-			$db->disconnect();
+			$this->connect();
+			$this->insert('users', $data);
+			$this->disconnect();
 		} catch(Exception $e) {
 			return false;
 		}
@@ -108,10 +107,10 @@ class User extends MysqliDb {
 		if(empty($this->getEmail())) return false;
 
 		try {
-			$db->connect();
-			$db->where('email', $this->getEmail(), 'LIKE');
-			$user = $db->get('users', 1, array('usr_id', 'user', 'email', 'password', 'status', 'register_data'));
-			$db->disconnect();
+			$this->connect();
+			$this->where('email', $this->getEmail(), 'LIKE');
+			$user = $this->get('users', 1, array('usr_id', 'user', 'email', 'password', 'status', 'register_data'));
+			$this->disconnect();
 
 		} catch(Exception $e) {
 			return false;
@@ -132,8 +131,8 @@ class User extends MysqliDb {
 		if(empty($this->getUserId())) return false;
 
 		try {
-			$db->where('usr_id', $this->getUserId());
-			$db->update('users', array('status' => 0));
+			$this->where('usr_id', $this->getUserId());
+			$this->update('users', array('status' => 0));
 			$this->setStatus(0);
 		} catch (Exception $e) {
 			return false;
@@ -145,8 +144,8 @@ class User extends MysqliDb {
 		if(empty($this->getUserId())) return false;
 
 		try {
-			$db->where('usr_id', $this->getUserId());
-			$db->update('users', array('status' => 1));
+			$this->where('usr_id', $this->getUserId());
+			$this->update('users', array('status' => 1));
 			$this->setStatus(1);
 		} catch (Exception $e) {
 			return false;
@@ -158,8 +157,8 @@ class User extends MysqliDb {
 		if(empty($this->getUserId()) || empty($email)) return false;
 
 		try {
-			$db->where('usr_id', $this->getUserId());
-			$db->update('users', array('email' => $email));
+			$this->where('usr_id', $this->getUserId());
+			$this->update('users', array('email' => $email));
 			$this->setEmail($email);
 		} catch (Exception $e) {
 			return false;
@@ -171,8 +170,8 @@ class User extends MysqliDb {
 		if(empty($this->getUserId()) || empty($password)) return false;
 
 		try {
-			$db->where('usr_id', $this->getUserId());
-			$db->update('users', array('password' => password_hash($password, PASSWORD_DEFAULT)));
+			$this->where('usr_id', $this->getUserId());
+			$this->update('users', array('password' => password_hash($password, PASSWORD_DEFAULT)));
 			$this->setPassword($password);
 		} catch (Exception $e) {
 			return false;
