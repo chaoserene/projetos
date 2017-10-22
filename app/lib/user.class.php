@@ -159,7 +159,7 @@ class User extends MysqliDb {
 
 		try {
 			$db->where('usr_id', $this->getUserId());
-			$db->update('users', array('email' => $email))	
+			$db->update('users', array('email' => $email));
 			$this->setEmail($email);
 		} catch (Exception $e) {
 			return false;
