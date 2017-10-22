@@ -97,7 +97,8 @@ class User extends MysqliDb {
 			$this->insert('users', $data);
 			$this->disconnect();
 		} catch(Exception $e) {
-			return false;
+			var_dump($e);exit;
+			//return false;
 		}
 
 		return true;
